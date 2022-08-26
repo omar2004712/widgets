@@ -5,9 +5,19 @@ import axios from 'axios';
 
 export default function Search() {
   const [term, setTerm] = useState('programming');
+  const [debounceTerm, setDebounceTerm] = useState(term);
   const [results, setResults] = useState([]);
 
-  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebounceTerm(term);
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [term]);
+
   useEffect(() => {
     const search = async () => {
       const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
@@ -16,27 +26,15 @@ export default function Search() {
           list: 'search',
           origin: '*',
           format: 'json',
-          srsearch: term,
+          srsearch: debounceTerm,
         },
       });
 
       setResults(data.query.search);
     };
 
-    if (term && results.length === 0) {
-      search();
-    } else {
-      const timeoutId = setTimeout(() => {
-        if (term) {
-          search();
-        }
-      }, 500);
-
-      return () => {
-        clearTimeout(timeoutId);
-      };
-    }
-  }, [term]);
+    search();
+  }, [debounceTerm]);
 
   const renderedResults = results.map((result) => (
     <div key={result.pageid} className="item">
