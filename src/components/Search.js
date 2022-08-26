@@ -3,17 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+let key;
+
 export default function Search() {
   const [term, setTerm] = useState('');
   const [results, setResults] = useState([]);
 
-  console.log(results);
-
   useEffect(() => {
-    if (!term) {
-      return;
-    }
-
     const search = async () => {
       const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
         params: {
@@ -28,8 +24,33 @@ export default function Search() {
       setResults(data.query.search);
     };
 
-    search();
+    const timeoutId = setTimeout(() => {
+      if (term) {
+        search();
+      }
+    }, 500);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [term]);
+
+  const renderedResults = results.map((result) => (
+    <div key={result.pageid} className="item">
+      <div className="right floated content">
+        <a
+          href={`https://en.wikipedia.org?curid=${result.pageid}`}
+          className="ui button"
+        >
+          GO
+        </a>
+      </div>
+      <div className="content">
+        <div className="header">{result.title}</div>
+        <span dangerouslySetInnerHTML={{ __html: result.snippet }} />
+      </div>
+    </div>
+  ));
 
   return (
     <div>
@@ -43,6 +64,7 @@ export default function Search() {
           />
         </div>
       </div>
+      <div className="ui celled list">{renderedResults}</div>
     </div>
   );
 }
