@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "airbnb"],
+  "extends": ["plugin:react/recommended", "airbnb", "react-app"],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -31,6 +31,7 @@
     "react/jsx-one-expression-per-line": "off",
     "react/destructuring-assignment": "off",
     "react/prop-types": "off",
-    "react/prefer-stateless-function": [0, { "ignorePureComponents": true }]
+    "react/prefer-stateless-function": [0, { "ignorePureComponents": true }],
+    "jsx-a11y/click-events-have-key-events": "off"
   }
 }
