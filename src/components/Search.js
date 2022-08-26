@@ -5,12 +5,12 @@ import axios from 'axios';
 
 export default function Search() {
   const [term, setTerm] = useState('programming');
-  const [debounceTerm, setDebounceTerm] = useState(term);
+  const [debouncedTerm, setDebouncedTerm] = useState(term);
   const [results, setResults] = useState([]);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setDebounceTerm(term);
+      setDebouncedTerm(term);
     }, 500);
 
     return () => {
@@ -26,7 +26,7 @@ export default function Search() {
           list: 'search',
           origin: '*',
           format: 'json',
-          srsearch: debounceTerm,
+          srsearch: debouncedTerm,
         },
       });
 
@@ -34,7 +34,7 @@ export default function Search() {
     };
 
     search();
-  }, [debounceTerm]);
+  }, [debouncedTerm]);
 
   const renderedResults = results.map((result) => (
     <div key={result.pageid} className="item">
