@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-let key;
-
 export default function Search() {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState('programming');
   const [results, setResults] = useState([]);
 
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     const search = async () => {
       const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
@@ -24,15 +23,19 @@ export default function Search() {
       setResults(data.query.search);
     };
 
-    const timeoutId = setTimeout(() => {
-      if (term) {
-        search();
-      }
-    }, 500);
+    if (term && results.length === 0) {
+      search();
+    } else {
+      const timeoutId = setTimeout(() => {
+        if (term) {
+          search();
+        }
+      }, 500);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
   }, [term]);
 
   const renderedResults = results.map((result) => (
