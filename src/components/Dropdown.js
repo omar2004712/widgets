@@ -3,7 +3,12 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect, useRef, useState } from 'react';
 
-export default function Dropdown({ options, selected, onSelectedChange }) {
+export default function Dropdown({
+  options,
+  selected,
+  onSelectedChange,
+  label,
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef();
 
@@ -47,7 +52,7 @@ export default function Dropdown({ options, selected, onSelectedChange }) {
   return (
     <div ref={ref} className="ui form">
       <div className="field">
-        <label className="label">Select an option</label>
+        <label className="label">{label}</label>
         <div
           onClick={() => {
             setIsOpen(!isOpen);

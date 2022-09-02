@@ -42,6 +42,7 @@ export default function App() {
       {/* <Accordion items={items} /> */}
       {/* <Search /> */}
       {/* <Dropdown
+        label="select a color"
         selected={selected}
         onSelectedChange={setSelected}
         options={options}

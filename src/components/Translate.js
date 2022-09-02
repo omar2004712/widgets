@@ -21,6 +21,7 @@ export default function Translate() {
   return (
     <div>
       <Dropdown
+        label="select a language"
         selected={language}
         onSelectedChange={setLanguage}
         options={options}
